@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marv RP - ресурспаки для Minecraft Bedrock</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1a 0%, #0c111c 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #eef2ff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: rgba(15, 22, 36, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 12px 24px;
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(145deg, #7c3aed, #5b21b6);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #a855f7;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+
+        .avatar-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .avatar-text small {
+            font-size: 9px;
+            font-weight: 500;
+            display: block;
+        }
+
+        .site-name {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff3df, #ffcd7e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .site-name span {
+            color: #c084fc;
+            background: none;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 6px;
+            border-radius: 60px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 8px 24px;
+            border-radius: 40px;
+            color: #ccddf8;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            background: #7c3aed;
+            color: white;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.5);
+            border: 1px solid #c084fc;
+        }
+
+        .tab-btn:not(.active):hover {
+            background: rgba(124, 58, 237, 0.3);
+            color: #e9d5ff;
+        }
+
+        .content-card {
+            background: rgba(10, 14, 23, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 32px 28px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            min-height: 480px;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 .bold {
+            font-weight: 800;
+            background: linear-gradient(120deg, #FFE6B0, #FFBD6A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero h1 .normal {
+            font-weight: 400;
+            color: #c5d5ff;
+        }
+
+        .hero h1 .bold-bedrock {
+            font-weight: 800;
+            background: linear-gradient(120deg, #FFE6B0, #FFBD6A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            background: rgba(20, 27, 45, 0.7);
+            border-radius: 24px;
+            padding: 28px 20px;
+            text-align: center;
+            border: 1px solid #2c3e62;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .feature:hover {
+            transform: translateY(-6px);
+            border-color: #a855f7;
+        }
+
+        .feature-emoji { font-size: 48px; margin-bottom: 16px; }
+        .feature h3 { font-size: 24px; margin-bottom: 10px; color: #ffda99; }
+        .feature p { color: #b8cbff; }
+
+        .click-hint {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #c084fc;
+            opacity: 0.8;
+        }
+
+        .tg-bottom-block {
+            text-align: center;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 0, 0, 0.3));
+            border-radius: 24px;
+            margin-top: 20px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .tg-bottom-block p {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .tg-bottom-block strong {
+            color: #c084fc;
+        }
+
+        .tg-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #1f2b48;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            border: 1px solid #ffcd7e;
+            transition: 0.2s;
+        }
+
+        .tg-button:hover {
+            background: #2f4170;
+            transform: scale(1.02);
+        }
+
+        .download-page {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .download-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .download-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #c084fc;
+            margin-bottom: 16px;
+        }
+
+        .download-description {
+            font-size: 18px;
+            color: #b8cbff;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .big-download-btn {
+            background: #7c3aed;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .big-download-btn:hover {
+            background: #6d28d9;
+            transform: scale(1.05);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #c084fc;
+        }
+
+        .file-info-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        .file-info-card p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .instruction-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: left;
+            border-left: 4px solid #c084fc;
+        }
+
+        .instruction-card p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .about-wrap { max-width: 820px; margin: 0 auto; text-align: center; }
+        .about-title { font-size: 36px; font-weight: 700; background: linear-gradient(135deg, #FFE2B5, #FFB347); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
+        .about-desc { font-size: 18px; background: rgba(0, 0, 0, 0.35); padding: 18px 24px; border-radius: 40px; margin-bottom: 28px; }
+        
+        .telegram-card {
+            background: linear-gradient(120deg, #162033, #0f1828);
+            padding: 24px 28px;
+            border-radius: 28px;
+            border-left: 6px solid #27a6e5;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+        
+        .button-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
+        
+        .tg-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #1f2b48;
+            padding: 14px 34px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            border: 1px solid #ffcd7e;
+        }
+        
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #2a2f45;
+            padding: 14px 34px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            border: 1px solid #6c8bc0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .copy-btn.copied { background: #2a7a4b; }
+        
+        .info-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            padding: 18px 24px;
+            margin-top: 28px;
+            text-align: left;
+        }
+        
+        .info-list li {
+            margin: 12px 0;
+            margin-left: 24px;
+            font-size: 16px;
+        }
+        
+        .info-list li strong {
+            color: #ffd966;
+        }
+        
+        .contacts-block {
+            text-align: center;
+            padding: 30px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 28px;
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+        
+        .contacts-block h3 {
+            font-size: 28px;
+            color: #c084fc;
+            margin-bottom: 20px;
+        }
+        
+        .contact-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .contact-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #7c3aed, #5b21b6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+            border: 2px solid #c084fc;
+        }
+        
+        .contact-username {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffd966;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .contact-description {
+            color: #b8cbff;
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .contact-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .contact-action-btn.tg-chat {
+            background: #1f2b48;
+            color: white;
+            border: 1px solid #27a6e5;
+        }
+        
+        .contact-action-btn.tg-chat:hover {
+            background: #2f4170;
+            transform: scale(1.02);
+        }
+        
+        .contact-action-btn.copy-user {
+            background: #2a2f45;
+            color: white;
+            border: 1px solid #c084fc;
+        }
+        
+        .contact-action-btn.copy-user:hover {
+            background: #3a4165;
+            transform: scale(1.02);
+        }
+        
+        .contact-action-btn.copy-user.copied {
+            background: #2a7a4b;
+            border-color: #7bef9e;
+        }
+        
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2a7a4b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+        }
+        
+        .toast-notify.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        .footer {
+            margin-top: 48px;
+            text-align: center;
+            padding: 24px 16px 16px;
+            font-size: 13px;
+            border-top: 1px solid rgba(168, 85, 247, 0.3);
+            color: #8e9fc3;
+        }
+        
+        @media (max-width: 700px) {
+            .container { padding: 16px; }
+            .header { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 28px; }
+            .button-group { flex-direction: column; align-items: center; }
+            .contact-buttons { flex-direction: column; align-items: center; }
+            .contact-action-btn { width: 100%; justify-content: center; }
+            .features { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="avatar">
+                <div class="avatar-text">RP<br><small>Marv</small></div>
+            </div>
+            <div class="site-name">Ресурс Паки ┃ <span>Marv</span></div>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="home">Главная</button>
+            <button class="tab-btn" data-tab="about">О нас</button>
+            <button class="tab-btn" data-tab="contacts">Контакты</button>
+        </div>
+    </div>
+
+    <div class="content-card">
+        <!-- ГЛАВНАЯ -->
+        <div id="homePane" class="tab-pane active-pane">
+            <div class="hero">
+                <h1>
+                    <span class="bold">Marv RP</span>
+                    <span class="normal"> - лучшие ресурспаки для </span>
+                    <span class="bold-bedrock">Minecraft Bedrock</span>
+                </h1>
+            </div>
+
+            <div class="features">
+                <div class="feature" id="popularBuildsCard" style="cursor: pointer;">
+                    <div class="feature-emoji">🎮</div>
+                    <h3>Популярные сборки Bedrock Edition</h3>
+                    <p>Лучшие текстуры и модели для вашего мира</p>
+                    <div class="click-hint">👇 Нажмите для скачивания</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-emoji">⚡</div>
+                    <h3>Оптимизация</h3>
+                    <p>Ресурс-паки без лагов на телефонах и ПК</p>
+                </div>
+                
+                <div class="feature" id="customizationCard" style="cursor: pointer;">
+                    <div class="feature-emoji">🔧</div>
+                    <h3>Кастомизация</h3>
+                    <p>Звуки, интерфейсы, гайды по установке</p>
+                    <div class="click-hint">👇 Нажмите для скачивания</div>
+                </div>
+            </div>
+
+            <div class="tg-bottom-block">
+                <p>🔍 <strong>Больше ресурспаков</strong> вы найдёте в нашем Telegram канале!</p>
+                <a href="https://t.me/marvelZX" class="tg-button" target="_blank">✈️ Перейти в Telegram канал</a>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА СКАЧИВАНИЯ: POPULAR BUILDS -->
+        <div id="popularBuildsDownloadPane" class="tab-pane">
+            <div class="download-page">
+                <div class="download-icon">✨</div>
+                <div class="download-title">§bParticulas-off V2§r</div>
+                <div class="download-description">
+                    Ресурс-пак для отключения частиц в Minecraft Bedrock.<br>
+                    Версия 2.0.1 | Minecraft 1.21.0+
+                </div>
+                
+                <button class="big-download-btn" id="downloadParticulasBtn">
+                    ⬇️ Скачать Particulas-off V2 (.mcpack)
+                </button>
+                
+                <div class="file-info-card">
+                    <p><strong>📁 Информация о файле:</strong></p>
+                    <p>• Название: Particulas-off V2</p>
+                    <p>• Автор: @DMCRAFT_MC</p>
+                    <p>• Версия: 2.0.1</p>
+                    <p>• Требуемая версия движка: 1.21.0+</p>
+                    <p>• Формат: .mcpack (устанавливается в Minecraft)</p>
+                </div>
+
+                <div class="instruction-card">
+                    <p><strong>📖 Как установить:</strong></p>
+                    <p>1. Скачайте файл</p>
+                    <p>2. Откройте его в Minecraft Bedrock Edition</p>
+                    <p>3. Нажмите "Установить"</p>
+                    <p>4. Активируйте ресурс-пак в настройках мира</p>
+                </div>
+                
+                <a href="#" class="back-link" id="backFromPopular">← Вернуться на главную</a>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА СКАЧИВАНИЯ: КАСТОМИЗАЦИЯ -->
+        <div id="downloadPane" class="tab-pane">
+            <div class="download-page">
+                <div class="download-icon">🌙</div>
+                <div class="download-title">Night Vision for R.D.</div>
+                <div class="download-description">
+                    Ресурс-пак для улучшенного ночного видения в Minecraft Bedrock
+                </div>
+                
+                <button class="big-download-btn" id="bigDownloadBtn">
+                    ⬇️ Скачать Night Vision (.mcpack)
+                </button>
+                
+                <div class="file-info-card">
+                    <p><strong>📁 Информация о файле:</strong></p>
+                    <p>• Название: Night Vision for R.D.</p>
+                    <p>• Версия: 1.19.20</p>
+                    <p>• Тип: Ресурс-пак</p>
+                    <p>• Формат: .mcpack (устанавливается в Minecraft)</p>
+                </div>
+
+                <div class="instruction-card">
+                    <p><strong>📖 Как установить:</strong></p>
+                    <p>1. Скачайте файл</p>
+                    <p>2. Откройте его в Minecraft Bedrock Edition</p>
+                    <p>3. Нажмите "Установить"</p>
+                    <p>4. Активируйте ресурс-пак в настройках мира</p>
+                </div>
+                
+                <a href="#" class="back-link" id="backToHome">← Вернуться на главную</a>
+            </div>
+        </div>
+
+        <!-- О НАС -->
+        <div id="aboutPane" class="tab-pane">
+            <div class="about-wrap">
+                <div class="about-title">📖 О нас — Marv RP</div>
+                <div class="about-desc">Команда Marv создаёт уникальные ресурс-паки для Bedrock Edition.</div>
+                <div class="telegram-card">
+                    <p>💬 <strong>Telegram канал:</strong> @marvelZX</p>
+                    <p>📦 <strong>В Telegram-канале вы найдёте больше ресурспаков для Bedrock!</strong></p>
+                </div>
+                <div class="button-group">
+                    <a href="https://t.me/marvelZX" class="tg-link-btn" target="_blank">✈️ Перейти в Telegram канал</a>
+                    <button class="copy-btn" id="copyBtn">📋 Скопировать ссылку</button>
+                </div>
+                <div class="info-list">
+                    <strong>🧩 Что вы найдёте в нашем ТГК:</strong>
+                    <ul>
+                        <li>📦 <strong>25+ RP паков</strong> — огромный выбор ресурсов</li>
+                        <li>👥 <strong>500+ пользователей</strong> — активное сообщество</li>
+                        <li>🔄 <strong>Постоянные обновления</strong> — свежие версии каждый месяц</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- КОНТАКТЫ -->
+        <div id="contactsPane" class="tab-pane">
+            <div class="contacts-block">
+                <h3>📞 Связь с нами</h3>
+                <div class="contact-card">
+                    <div class="contact-avatar">👤</div>
+                    <div class="contact-username">@zevizazza</div>
+                    <div class="contact-description">
+                        По всем вопросам и предложениям обращайтесь к этому пользователю.<br>
+                        Будем рады помочь вам!
+                    </div>
+                    <div class="contact-buttons">
+                        <a href="https://t.me/zevizazza" class="contact-action-btn tg-chat" target="_blank">
+                            💬 Написать в Telegram
+                        </a>
+                        <button class="contact-action-btn copy-user" id="copyUsernameBtn">
+                            📋 Скопировать username
+                        </button>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 13px; color: #6b7280;">
+                        Нажмите "Написать в Telegram" чтобы сразу открыть диалог
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">© 2025 Ресурс Паки ┃ Marv — Лучшие сборки для Bedrock RP</div>
+</div>
+
+<div id="toastMsg" class="toast-notify">✅ Готово!</div>
+
+<script>
+    (function() {
+        // Переключение вкладок
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const homePane = document.getElementById('homePane');
+        const aboutPane = document.getElementById('aboutPane');
+        const contactsPane = document.getElementById('contactsPane');
+        const downloadPane = document.getElementById('downloadPane');
+        const popularBuildsDownloadPane = document.getElementById('popularBuildsDownloadPane');
+        
+        function switchTab(tabId) {
+            homePane.classList.remove('active-pane');
+            aboutPane.classList.remove('active-pane');
+            if (contactsPane) contactsPane.classList.remove('active-pane');
+            if (downloadPane) downloadPane.classList.remove('active-pane');
+            if (popularBuildsDownloadPane) popularBuildsDownloadPane.classList.remove('active-pane');
+            
+            if (tabId === 'home') homePane.classList.add('active-pane');
+            else if (tabId === 'about') aboutPane.classList.add('active-pane');
+            else if (tabId === 'contacts' && contactsPane) contactsPane.classList.add('active-pane');
+            else if (tabId === 'download' && downloadPane) downloadPane.classList.add('active-pane');
+            else if (tabId === 'popularBuildsDownload' && popularBuildsDownloadPane) popularBuildsDownloadPane.classList.add('active-pane');
+            
+            tabBtns.forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+        });
+        
+        // Клик на карточки
+        document.getElementById('popularBuildsCard')?.addEventListener('click', () => switchTab('popularBuildsDownload'));
+        document.getElementById('customizationCard')?.addEventListener('click', () => switchTab('download'));
+        
+        // НОВЫЙ ОБНОВЛЁННЫЙ manifest ДЛЯ PARTICULAS-OFF V2
+        const particulasManifest = {
+            "format_version": 2,
+            "header": {
+                "name": "§bParticulas-off V2§r",
+                "description": "§bparticulas-off made by §a@DMCRAFT_MC§b=§4YouTube§r",
+                "version": [2, 0, 1],
+                "min_engine_version": [1, 21, 0],
+                "uuid": "dd082ec6-17d1-4976-a93a-3ca275bd8a9f"
+            },
+            "modules": [{
+                "type": "resources",
+                "version": [2, 0, 1],
+                "uuid": "569d89a1-68b0-45ac-bc49-9a6a299dbeb6"
+            }],
+            "metadata": {
+                "authors": ["@DMCRAFT_MC"],
+                "URL:Youtube": ["https://youtube.com/@DMCRAFT_MC"]
+            }
+        };
+        
+        // manifest ДЛЯ NIGHT VISION
+        const nightVisionManifest = {
+            "format_version": 2,
+            "header": {
+                "description": "YT:- Wind's Scion",
+                "name": "Night Vision for R.D.",
+                "uuid": "92cfbdf7-3636-4d45-98a1-801c4f2f8b1a",
+                "version": [1, 19, 20],
+                "min_engine_version": [1, 19, 20]
+            },
+            "modules": [{
+                "description": "Night Vision for R.D.",
+                "type": "resources",
+                "uuid": "ac8cbce1-6abd-49d1-81e7-0e79cb732116",
+                "version": [0, 0, 1]
+            }]
+        };
+        
+        const validPngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+        
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = msg;
+            toast.style.background = isError ? '#8b3a3a' : '#2a7a4b';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+        
+        function createMcpack(manifest, filename, packName) {
+            if (typeof JSZip === 'undefined') {
+                showToast('⏳ Загрузка... попробуйте ещё раз', true);
+                return;
+            }
+            
+            try {
+                const zip = new JSZip();
+                zip.file("manifest.json", JSON.stringify(manifest, null, 4));
+                
+                const binaryString = atob(validPngBase64);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                zip.file("pack_icon.png", bytes);
+                zip.folder("textures");
+                
+                zip.generateAsync({ type: 'blob' }).then((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast(`✅ ${packName} скачан! Откройте в Minecraft`);
+                }).catch(() => {
+                    showToast('❌ Ошибка создания архива', true);
+                });
+            } catch(e) {
+                showToast('❌ Ошибка: ' + e.message, true);
+            }
+        }
+        
+        // Кнопки скачивания
+        document.getElementById('downloadParticulasBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            createMcpack(particulasManifest, 'Particulas-off_V2.mcpack', 'Particulas-off V2');
+        });
+        
+        document.getElementById('bigDownloadBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            createMcpack(nightVisionManifest, 'Night_Vision_RD.mcpack', 'Night Vision');
+        });
+        
+        // Кнопки "Вернуться"
+        document.getElementById('backFromPopular')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('home');
+        });
+        
+        document.getElementById('backToHome')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('home');
+        });
+        
+        // Копирование ссылки
+        const copyBtn = document.getElementById('copyBtn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText('https://t.me/marvelZX');
+                    showToast('✅ Ссылка скопирована!');
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => copyBtn.classList.remove('copied'), 800);
+                } catch {
+                    showToast('❌ Ошибка', true);
+                }
+            });
+        }
+        
+        // Копирование username
+        const copyUsernameBtn = document.getElementById('copyUsernameBtn');
+        if (copyUsernameBtn) {
+            copyUsernameBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText('@zevizazza');
+                    showToast('✅ Username скопирован!');
+                    copyUsernameBtn.classList.add('copied');
+                    setTimeout(() => copyUsernameBtn.classList.remove('copied'), 800);
+                } catch {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = '@zevizazza';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast('✅ Username скопирован!');
+                    copyUsernameBtn.classList.add('copied');
+                    setTimeout(() => copyUsernameBtn.classList.remove('copied'), 800);
+                }
+            });
+        }
+        
+        // Активная вкладка по умолчанию
+        if (!document.querySelector('.tab-btn.active') || document.querySelector('.tab-btn.active').getAttribute('data-tab') !== 'home') {
+            switchTab('home');
+        }
+    })();
+</script>
+</body>
+</html>
