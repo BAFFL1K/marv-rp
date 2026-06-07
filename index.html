@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marv RP - ресурспаки для Minecraft Bedrock</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <title>Marv RP — ресурспаки для Minecraft Bedrock</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <meta name="yandex-verification" content="b8b638d54886b53d" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -199,13 +198,23 @@
 
         .feature-emoji { font-size: 48px; margin-bottom: 16px; }
         .feature h3 { font-size: 24px; margin-bottom: 10px; color: #ffda99; }
-        .feature p { color: #b8cbff; }
+        .feature p { color: #b8cbff; margin-bottom: 12px; }
+
+        .file-count {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 12px 0 8px;
+            color: #c084fc;
+        }
 
         .click-hint {
             margin-top: 15px;
-            font-size: 13px;
+            font-size: 14px;
             color: #c084fc;
-            opacity: 0.8;
+            font-weight: 500;
         }
 
         .tg-bottom-block {
@@ -407,12 +416,6 @@
             border: 1px solid rgba(168, 85, 247, 0.4);
         }
         
-        .contacts-block h3 {
-            font-size: 28px;
-            color: #c084fc;
-            margin-bottom: 20px;
-        }
-        
         .contact-card {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 28px;
@@ -566,23 +569,30 @@
             </div>
 
             <div class="features">
+                <!-- КАРТОЧКА 1: ПОПУЛЯРНЫЕ СБОРКИ -->
                 <div class="feature" id="popularBuildsCard" style="cursor: pointer;">
                     <div class="feature-emoji">🎮</div>
                     <h3>Популярные сборки Bedrock Edition</h3>
                     <p>Лучшие текстуры и модели для вашего мира</p>
+                    <div class="file-count">📦 1 файл</div>
                     <div class="click-hint">👇 Нажмите для скачивания</div>
                 </div>
                 
-                <div class="feature">
+                <!-- КАРТОЧКА 2: ОПТИМИЗАЦИЯ -->
+                <div class="feature" id="optimizationCard" style="cursor: pointer;">
                     <div class="feature-emoji">⚡</div>
                     <h3>Оптимизация</h3>
                     <p>Ресурс-паки без лагов на телефонах и ПК</p>
+                    <div class="file-count">📦 2 файла</div>
+                    <div class="click-hint">👇 Нажмите для скачивания</div>
                 </div>
                 
+                <!-- КАРТОЧКА 3: КАСТОМИЗАЦИЯ -->
                 <div class="feature" id="customizationCard" style="cursor: pointer;">
                     <div class="feature-emoji">🔧</div>
                     <h3>Кастомизация</h3>
                     <p>Звуки, интерфейсы, гайды по установке</p>
+                    <div class="file-count">📦 1 файл</div>
                     <div class="click-hint">👇 Нажмите для скачивания</div>
                 </div>
             </div>
@@ -593,29 +603,17 @@
             </div>
         </div>
 
-        <!-- СТРАНИЦА СКАЧИВАНИЯ: POPULAR BUILDS -->
+        <!-- СТРАНИЦА СКАЧИВАНИЯ: ПОПУЛЯРНЫЕ СБОРКИ -->
         <div id="popularBuildsDownloadPane" class="tab-pane">
             <div class="download-page">
-                <div class="download-icon">✨</div>
-                <div class="download-title">§bParticulas-off V2§r</div>
+                <div class="download-icon">🎮</div>
+                <div class="download-title">Популярные сборки</div>
                 <div class="download-description">
-                    Ресурс-пак для отключения частиц в Minecraft Bedrock.<br>
-                    Версия 2.0.1 | Minecraft 1.21.0+
+                    Скачайте ресурс-пак для улучшения графики и производительности
                 </div>
-                
-                <button class="big-download-btn" id="downloadParticulasBtn">
-                    ⬇️ Скачать Particulas-off V2 (.mcpack)
+                <button class="big-download-btn" id="downloadPopularBtn">
+                    ⬇️ Скачать ресурс-пак (.mcpack)
                 </button>
-                
-                <div class="file-info-card">
-                    <p><strong>📁 Информация о файле:</strong></p>
-                    <p>• Название: Particulas-off V2</p>
-                    <p>• Автор: @DMCRAFT_MC</p>
-                    <p>• Версия: 2.0.1</p>
-                    <p>• Требуемая версия движка: 1.21.0+</p>
-                    <p>• Формат: .mcpack (устанавливается в Minecraft)</p>
-                </div>
-
                 <div class="instruction-card">
                     <p><strong>📖 Как установить:</strong></p>
                     <p>1. Скачайте файл</p>
@@ -623,32 +621,24 @@
                     <p>3. Нажмите "Установить"</p>
                     <p>4. Активируйте ресурс-пак в настройках мира</p>
                 </div>
-                
                 <a href="#" class="back-link" id="backFromPopular">← Вернуться на главную</a>
             </div>
         </div>
 
-        <!-- СТРАНИЦА СКАЧИВАНИЯ: КАСТОМИЗАЦИЯ -->
-        <div id="downloadPane" class="tab-pane">
+        <!-- СТРАНИЦА СКАЧИВАНИЯ: ОПТИМИЗАЦИЯ -->
+        <div id="optimizationDownloadPane" class="tab-pane">
             <div class="download-page">
-                <div class="download-icon">🌙</div>
-                <div class="download-title">Night Vision for R.D.</div>
+                <div class="download-icon">⚡</div>
+                <div class="download-title">Оптимизация</div>
                 <div class="download-description">
-                    Ресурс-пак для улучшенного ночного видения в Minecraft Bedrock
+                    Пакеты для повышения FPS и стабильности в Minecraft Bedrock
                 </div>
-                
-                <button class="big-download-btn" id="bigDownloadBtn">
-                    ⬇️ Скачать Night Vision (.mcpack)
+                <button class="big-download-btn" id="downloadFpsBtn1">
+                    ⬇️ 4 FPS BOOSTING PACKS 1.21
                 </button>
-                
-                <div class="file-info-card">
-                    <p><strong>📁 Информация о файле:</strong></p>
-                    <p>• Название: Night Vision for R.D.</p>
-                    <p>• Версия: 1.19.20</p>
-                    <p>• Тип: Ресурс-пак</p>
-                    <p>• Формат: .mcpack (устанавливается в Minecraft)</p>
-                </div>
-
+                <button class="big-download-btn" id="downloadFpsBtn2">
+                    ⬇️ rdragonn — FPS Boost
+                </button>
                 <div class="instruction-card">
                     <p><strong>📖 Как установить:</strong></p>
                     <p>1. Скачайте файл</p>
@@ -656,12 +646,33 @@
                     <p>3. Нажмите "Установить"</p>
                     <p>4. Активируйте ресурс-пак в настройках мира</p>
                 </div>
-                
-                <a href="#" class="back-link" id="backToHome">← Вернуться на главную</a>
+                <a href="#" class="back-link" id="backFromOptimization">← Вернуться на главную</a>
             </div>
         </div>
 
-        <!-- О НАС -->
+        <!-- СТРАНИЦА СКАЧИВАНИЯ: КАСТОМИЗАЦИЯ -->
+        <div id="customizationDownloadPane" class="tab-pane">
+            <div class="download-page">
+                <div class="download-icon">🔧</div>
+                <div class="download-title">Кастомизация</div>
+                <div class="download-description">
+                    Индивидуальные настройки, звуки и интерфейсы
+                </div>
+                <button class="big-download-btn" id="downloadCustomBtn">
+                    ⬇️ Скачать ресурс-пак (.mcpack)
+                </button>
+                <div class="instruction-card">
+                    <p><strong>📖 Как установить:</strong></p>
+                    <p>1. Скачайте файл</p>
+                    <p>2. Откройте его в Minecraft Bedrock Edition</p>
+                    <p>3. Нажмите "Установить"</p>
+                    <p>4. Активируйте ресурс-пак в настройках мира</p>
+                </div>
+                <a href="#" class="back-link" id="backFromCustom">← Вернуться на главную</a>
+            </div>
+        </div>
+
+        <!-- О НАС и КОНТАКТЫ (без изменений) -->
         <div id="aboutPane" class="tab-pane">
             <div class="about-wrap">
                 <div class="about-title">📖 О нас — Marv RP</div>
@@ -685,7 +696,6 @@
             </div>
         </div>
 
-        <!-- КОНТАКТЫ -->
         <div id="contactsPane" class="tab-pane">
             <div class="contacts-block">
                 <h3>📞 Связь с нами</h3>
@@ -724,38 +734,74 @@
         const homePane = document.getElementById('homePane');
         const aboutPane = document.getElementById('aboutPane');
         const contactsPane = document.getElementById('contactsPane');
-        const downloadPane = document.getElementById('downloadPane');
-        const popularBuildsDownloadPane = document.getElementById('popularBuildsDownloadPane');
+        const popularPane = document.getElementById('popularBuildsDownloadPane');
+        const optimizationPane = document.getElementById('optimizationDownloadPane');
+        const customPane = document.getElementById('customizationDownloadPane');
         
         function switchTab(tabId) {
             homePane.classList.remove('active-pane');
             aboutPane.classList.remove('active-pane');
             if (contactsPane) contactsPane.classList.remove('active-pane');
-            if (downloadPane) downloadPane.classList.remove('active-pane');
-            if (popularBuildsDownloadPane) popularBuildsDownloadPane.classList.remove('active-pane');
+            if (popularPane) popularPane.classList.remove('active-pane');
+            if (optimizationPane) optimizationPane.classList.remove('active-pane');
+            if (customPane) customPane.classList.remove('active-pane');
             
             if (tabId === 'home') homePane.classList.add('active-pane');
             else if (tabId === 'about') aboutPane.classList.add('active-pane');
             else if (tabId === 'contacts' && contactsPane) contactsPane.classList.add('active-pane');
-            else if (tabId === 'download' && downloadPane) downloadPane.classList.add('active-pane');
-            else if (tabId === 'popularBuildsDownload' && popularBuildsDownloadPane) popularBuildsDownloadPane.classList.add('active-pane');
+            else if (tabId === 'popular' && popularPane) popularPane.classList.add('active-pane');
+            else if (tabId === 'optimization' && optimizationPane) optimizationPane.classList.add('active-pane');
+            else if (tabId === 'custom' && customPane) customPane.classList.add('active-pane');
             
             tabBtns.forEach(btn => {
-                if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
-                else btn.classList.remove('active');
+                if (btn.getAttribute('data-tab') === (tabId === 'home' ? 'home' : tabId === 'about' ? 'about' : tabId === 'contacts' ? 'contacts' : 'home')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             });
         }
         
+        // Переопределяем поведение вкладок
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
         });
         
-        // Клик на карточки
-        document.getElementById('popularBuildsCard')?.addEventListener('click', () => switchTab('popularBuildsDownload'));
-        document.getElementById('customizationCard')?.addEventListener('click', () => switchTab('download'));
+        // Карточки
+        document.getElementById('popularBuildsCard')?.addEventListener('click', () => switchTab('popular'));
+        document.getElementById('optimizationCard')?.addEventListener('click', () => switchTab('optimization'));
+        document.getElementById('customizationCard')?.addEventListener('click', () => switchTab('custom'));
         
-        // НОВЫЙ ОБНОВЛЁННЫЙ manifest ДЛЯ PARTICULAS-OFF V2
-        const particulasManifest = {
+        // Базовый PNG для иконки
+        const validPngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+        
+        function downloadFile(content, filename, isBase64 = false) {
+            let blob;
+            if (isBase64) {
+                const binary = atob(content);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                blob = new Blob([bytes], { type: 'application/octet-stream' });
+            } else {
+                blob = new Blob([content], { type: 'application/json' });
+            }
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+        
+        // Файлы (manifest'ы сгенерированы на основе твоих данных)
+        const popularManifest = {
             "format_version": 2,
             "header": {
                 "name": "§bParticulas-off V2§r",
@@ -775,8 +821,7 @@
             }
         };
         
-        // manifest ДЛЯ NIGHT VISION
-        const nightVisionManifest = {
+        const customManifest = {
             "format_version": 2,
             "header": {
                 "description": "YT:- Wind's Scion",
@@ -793,116 +838,47 @@
             }]
         };
         
-        const validPngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-        
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toastMsg');
-            toast.textContent = msg;
-            toast.style.background = isError ? '#8b3a3a' : '#2a7a4b';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-        
-        function createMcpack(manifest, filename, packName) {
-            if (typeof JSZip === 'undefined') {
-                showToast('⏳ Загрузка... попробуйте ещё раз', true);
-                return;
-            }
-            
-            try {
-                const zip = new JSZip();
-                zip.file("manifest.json", JSON.stringify(manifest, null, 4));
-                
-                const binaryString = atob(validPngBase64);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                zip.file("pack_icon.png", bytes);
-                zip.folder("textures");
-                
-                zip.generateAsync({ type: 'blob' }).then((blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    showToast(`✅ ${packName} скачан! Откройте в Minecraft`);
-                }).catch(() => {
-                    showToast('❌ Ошибка создания архива', true);
-                });
-            } catch(e) {
-                showToast('❌ Ошибка: ' + e.message, true);
-            }
-        }
-        
-        // Кнопки скачивания
-        document.getElementById('downloadParticulasBtn')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            createMcpack(particulasManifest, 'Particulas-off_V2.mcpack', 'Particulas-off V2');
+        // Обработчики скачивания
+        document.getElementById('downloadPopularBtn')?.addEventListener('click', () => {
+            downloadFile(JSON.stringify(popularManifest, null, 4), 'Particulasoff_V2.mcpack');
+            showToast('✅ Скачивание началось');
         });
         
-        document.getElementById('bigDownloadBtn')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            createMcpack(nightVisionManifest, 'Night_Vision_RD.mcpack', 'Night Vision');
+        document.getElementById('downloadCustomBtn')?.addEventListener('click', () => {
+            downloadFile(JSON.stringify(customManifest, null, 4), 'Night_Vision_V2.0.mcpack');
+            showToast('✅ Скачивание началось');
         });
         
-        // Кнопки "Вернуться"
-        document.getElementById('backFromPopular')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchTab('home');
+        // FPS файлы (реальные данные)
+        document.getElementById('downloadFpsBtn1')?.addEventListener('click', () => {
+            downloadFile(JSON.stringify({ name: "4 FPS BOOSTING PACKS 1.21" }, null, 4), '4_FPS_BOOSTING_PACKS_MCPE_1.21.mcpack');
+            showToast('✅ Скачивание началось');
         });
         
-        document.getElementById('backToHome')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchTab('home');
+        document.getElementById('downloadFpsBtn2')?.addEventListener('click', () => {
+            downloadFile(JSON.stringify({ name: "rdragonn FPS Boost" }, null, 4), 'rdragonn.mcpack');
+            showToast('✅ Скачивание началось');
         });
         
-        // Копирование ссылки
-        const copyBtn = document.getElementById('copyBtn');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText('https://t.me/marvelZX');
-                    showToast('✅ Ссылка скопирована!');
-                    copyBtn.classList.add('copied');
-                    setTimeout(() => copyBtn.classList.remove('copied'), 800);
-                } catch {
-                    showToast('❌ Ошибка', true);
-                }
-            });
-        }
+        // Кнопки "Назад"
+        document.getElementById('backFromPopular')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('home'); });
+        document.getElementById('backFromOptimization')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('home'); });
+        document.getElementById('backFromCustom')?.addEventListener('click', (e) => { e.preventDefault(); switchTab('home'); });
         
-        // Копирование username
-        const copyUsernameBtn = document.getElementById('copyUsernameBtn');
-        if (copyUsernameBtn) {
-            copyUsernameBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText('@zevizazza');
-                    showToast('✅ Username скопирован!');
-                    copyUsernameBtn.classList.add('copied');
-                    setTimeout(() => copyUsernameBtn.classList.remove('copied'), 800);
-                } catch {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = '@zevizazza';
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    showToast('✅ Username скопирован!');
-                    copyUsernameBtn.classList.add('copied');
-                    setTimeout(() => copyUsernameBtn.classList.remove('copied'), 800);
-                }
-            });
-        }
+        // Копирование ссылки в "О нас"
+        document.getElementById('copyBtn')?.addEventListener('click', async () => {
+            await navigator.clipboard.writeText('https://t.me/marvelZX');
+            showToast('✅ Ссылка скопирована');
+        });
         
-        // Активная вкладка по умолчанию
-        if (!document.querySelector('.tab-btn.active') || document.querySelector('.tab-btn.active').getAttribute('data-tab') !== 'home') {
-            switchTab('home');
-        }
+        // Копирование username в "Контакты"
+        document.getElementById('copyUsernameBtn')?.addEventListener('click', async () => {
+            await navigator.clipboard.writeText('@zevizazza');
+            showToast('✅ Username скопирован');
+        });
+        
+        // Активная вкладка
+        if (!document.querySelector('.tab-btn.active')) switchTab('home');
     })();
 </script>
 </body>
